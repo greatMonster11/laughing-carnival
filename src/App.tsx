@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [input, setInput] = useState<string>("");
+  const [messages, setMessages] = useState<string[]>([
+    "Hi",
+    "Hello, How are you ? ",
+  ]);
+
+  const addMessage = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setMessages([...messages, input]);
+    setInput("");
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello Awesome !!! </h1>
+      <form onSubmit={addMessage}>
+        <input
+          value={input}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+            setInput(event.target.value)
+          }
+        />
+        <button type="submit">Send Message</button>
+      </form>
+      {messages.map((message: string) => (
+        <p>{message}</p>
+      ))}
     </div>
   );
 }
