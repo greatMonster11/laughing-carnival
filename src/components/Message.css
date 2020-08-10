@@ -3,3 +3,16 @@
     margin: 10px;
     width: fit-content;
 }
+
+.message__user {
+    margin-left: auto;
+    color: white;
+    text-align: right !important;
+}
+
+.message__userCard {
+    background-color: blue !important;
+}
+.message__guestCard {
+    background-color: lightgrey !important;
+}

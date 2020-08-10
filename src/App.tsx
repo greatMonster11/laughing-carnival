@@ -5,16 +5,21 @@ import { FormControl, Input, InputLabel } from "@material-ui/core";
 
 import Message from "./components/Message";
 import { IMessage } from "./components/Message";
+import db from "./firebase";
 
 import "./App.css";
 
 function App() {
   const [input, setInput] = useState<string>("");
-  const [messages, setMessages] = useState<IMessage[]>([
-    { user: "Thanh", text: "hello" },
-    { user: "Been", text: "Hi there" },
-  ]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [username, setUsername] = useState<string>("");
+
+  useEffect(() => {
+    // run once when the app loads components
+    db.collection("messages").onSnapshot((snapshot) => {
+      setMessages(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
 
   useEffect((): void => {
     var username: string = prompt("Plase enter your name") || "";
@@ -23,7 +28,7 @@ function App() {
 
   const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessages([...messages, { text: input, user: username }]);
+    setMessages([...messages, { message: input, username }]);
     setInput("");
   };
 
@@ -51,7 +56,7 @@ function App() {
         </FormControl>
       </form>
       {messages.map((message: IMessage) => (
-        <Message text={message.text} user={message.user} />
+        <Message message={message} username={username} />
       ))}
     </div>
   );
